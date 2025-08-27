@@ -1,3 +1,40 @@
+## Trending Token Tracker (Gasless)
+
+Monorepo with `server` (Express + TypeScript) and `web` (Vite + React + TS).
+
+### Setup
+
+1. Install deps
+
+```
+npm install -w server -D typescript ts-node-dev @types/node @types/express @types/cors
+npm install -w server express axios cors dotenv zod
+cd web && npm install && cd ..
+```
+
+2. Env
+
+```
+cp server/.env.example server/.env
+```
+
+3. Dev
+
+```
+npm run dev
+```
+
+Server on http://localhost:3001, Web on http://localhost:5173.
+
+### Endpoints
+
+- GET `/api/trending` → Top 3 trending tokens (volume-based heuristic)
+- POST `/api/buy` → Stubbed gasless buy using AgentKit (to implement)
+
+### Next: Integrate 0xGasless AgentKit
+
+- Implement buy flow in `server/src/index.ts` using AgentKit to perform a gasless swap on Polygon/Arbitrum testnets.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
