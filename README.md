@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Trending Token Tracker (Gasless)
 
-## Getting Started
+A simple Web3 dApp that shows Top 3 trending tokens from CoinDCX and lets users buy via a gasless swap using 0xGasless AgentKit.
 
-First, run the development server:
+## Stack
+- Frontend: React (Vite)
+- Backend: Node.js + Express
+- Data: CoinDCX public API
+- Gasless: 0xGasless AgentKit (optional for demo)
+
+## Quick Start
+
+### 1) Install
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# In workspace root
+cd server && npm i && cd ..
+cd client && npm i && cd ..
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2) Run
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Terminal 1 - backend
+cd server
+npm run dev
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Terminal 2 - frontend
+cd client
+VITE_API_BASE=http://localhost:3001 npm run dev
+```
 
-## Learn More
+Open http://localhost:5173
 
-To learn more about Next.js, take a look at the following resources:
+### 3) Using the App
+- The homepage lists Top 3 tokens (by 24h % move × volume) from CoinDCX
+- Enter amount and click Buy to simulate a gasless swap
+- If AgentKit is configured, it will perform a real gasless swap
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## AgentKit Configuration (Optional)
+Create `server/.env`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+API_KEY=your_0xgasless_api_key
+RPC_URL=https://your-rpc-url
+CHAIN_ID=8453
+PRIVATE_KEY=0xyour_private_key
+# or
+# MNEMONIC_PHRASE="word1 word2 ... word12"
+```
 
-## Deploy on Vercel
+Notes:
+- Supported chains by the current SDK include Base(8453), Fantom(250), Moonbeam(1284), Metis(1088), Avalanche(43114), BSC(56)
+- The `/buy` endpoint swaps from USDT to the selected token by symbol or address; update to your needs
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Endpoints
+- `GET /health` -> `{ ok: true }`
+- `GET /config` -> `{ agentkitConfigured, chainId }`
+- `GET /trending` -> `{ tokens: [ { market, token, price, change24hPct, volume24h, quote } ] }`
+- `POST /buy` -> `{ success, result | message }`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Hackathon Demo Script
+1. Open the app -> see top 3 tokens
+2. Click Buy $X of token -> if configured, AgentKit performs gasless swap
+3. Show confirmation toast
+
+## Credits
+- CoinDCX Public API
+- 0xGasless AgentKit
