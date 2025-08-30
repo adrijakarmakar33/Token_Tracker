@@ -1,7 +1,13 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  outputFileTracingRoot: process.cwd(),
+  experimental: {
+    optimizePackageImports: ['lucide-react']
+  },
+  images: {
+    domains: ['api.coindcx.com']
+  }
+}
 
-export default nextConfig;
+export default nextConfig
